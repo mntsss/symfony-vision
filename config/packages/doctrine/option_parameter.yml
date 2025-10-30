@@ -1,0 +1,21 @@
+doctrine:
+    orm:
+        mappings:
+            ApiOptionParameter:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Api/OptionParameter/Entity'
+                prefix: 'App\Api\OptionParameter\Entity'
+                alias: OptionParameter
+            ApiOptionValue:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Api/OptionParameter/Entity'
+                prefix: 'App\Api\OptionParameter\Entity'
+                alias: OptionValue
+            ApiOptionValueRelation:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Api/OptionParameter/Entity'
+                prefix: 'App\Api\OptionParameter\Entity'
+                alias: OptionValueRelation

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api\Controller;
 
-abstract class AbstractController
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
+
+abstract class AbstractController extends SymfonyAbstractController
 {
 
 }

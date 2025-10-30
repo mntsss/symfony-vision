@@ -1,5 +1,5 @@
 imports:
-    - { resource: doctrine/entity.yml }
+    - { resource: doctrine/option_parameter.yml }
 
 doctrine:
     dbal:

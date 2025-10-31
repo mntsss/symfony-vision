@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\OptionParameter\Service\RelationTree;
 
+use App\Api\Exception\ApiBadRequestException;
 use App\Shared\Util\ArrayUtilTrait;
 
 class RelationTreeFilter
@@ -28,6 +29,10 @@ class RelationTreeFilter
                     $parameterValueMap = $this->collectValidPathsParameterValues($path, $parameterValueMap);
                 }
             }
+        }
+
+        if (empty($parameterValueMap)) {
+            throw new ApiBadRequestException('No valid parameter values found');
         }
 
         return $this->sanitizeUniqueArrayValues($parameterValueMap);

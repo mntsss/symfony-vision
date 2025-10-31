@@ -12,4 +12,9 @@ interface OptionParameterServiceInterface
      * @return array<string, array<string>>
      */
     public function getParametersValues(array $criteria): array;
+
+    /**
+     * @return array
+     */
+    public function getFullRelationsTree(): array;
 }

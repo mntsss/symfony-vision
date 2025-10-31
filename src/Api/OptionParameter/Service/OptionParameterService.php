@@ -26,8 +26,16 @@ readonly class OptionParameterService implements OptionParameterServiceInterface
     public function getParametersValues(array $criteria): array
     {
         $idOptionValues = $this->optionParameterReader->findOptionValueIdsByParameterNames($criteria);
-        $optionValueRelationTree = $this->relationTreeBuilder->buildRelationsTree();
+        $optionValueRelationTree = $this->getFullRelationsTree();
 
         return $this->relationTreeFilter->findRelationsTreeValidParameterValues($optionValueRelationTree, $idOptionValues);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFullRelationsTree(): array
+    {
+        return $this->relationTreeBuilder->buildRelationsTree();
     }
 }

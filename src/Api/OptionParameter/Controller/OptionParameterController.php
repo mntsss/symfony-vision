@@ -34,4 +34,10 @@ class OptionParameterController extends AbstractController
 
         return $this->json($parameterValues);
     }
+
+    #[Route('/api/option/parameter/debug', name: 'app_option_parameter_debug', methods: ['GET'])]
+    public function debug(): JsonResponse
+    {
+        return $this->json($this->optionParameterService->getFullRelationsTree());
+    }
 }

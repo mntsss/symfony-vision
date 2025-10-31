@@ -6,6 +6,7 @@ use App\Api\OptionParameter\Repository\OptionParameterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: OptionParameterRepository::class)]
 #[ORM\Table(name: 'option_parameter')]
@@ -26,6 +27,7 @@ class OptionParameter
      * @var Collection<int, OptionValue>
      */
     #[ORM\OneToMany(targetEntity: OptionValue::class, mappedBy: 'parameter', orphanRemoval: true)]
+    #[MaxDepth(1)]
     private Collection $optionValues;
 
     public function __construct()

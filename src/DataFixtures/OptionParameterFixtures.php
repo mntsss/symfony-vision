@@ -8,43 +8,90 @@ use App\Api\OptionParameter\Entity\OptionValueRelation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 
 class OptionParameterFixtures extends Fixture
 {
-    public const PARAMETER_NAMES = [
-        'Power',
-        'Base Curve',
-        'Diameter',
-        'Cylinder',
-        'Axis',
+    private const array PARAMETER_NAMES = [
+        'power',
+        'curve',
+        'diameter',
+        'width',
     ];
+
+    private const int PER_LEVEL_VALUE_COUNT = 5;
+
+    private Generator $faker;
+
+    public function __construct()
+    {
+        $this->faker = Factory::create();
+    }
 
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create();
+        $parameters = $this->buildOptionParameters($manager);
+        $values = $this->buildOptionValues($manager, $parameters);
+        $this->buildOptionValueRelations($manager, $parameters, $values);
 
+        $manager->flush();
+    }
+
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return array<OptionParameter>
+     */
+    private function buildOptionParameters(ObjectManager $manager): array
+    {
         $parameters = [];
         foreach (self::PARAMETER_NAMES as $index => $name) {
             $parameter = new OptionParameter();
             $parameter->setName($name);
-            $parameter->setLevel($index + 1);
+            $parameter->setLevel($index);
             $manager->persist($parameter);
             $parameters[] = $parameter;
         }
 
+        return $parameters;
+    }
+
+    /**
+     * @param ObjectManager $manager
+     * @param array<OptionParameter> $parameters
+     *
+     * @return array<array<OptionValue>>
+     */
+    private function buildOptionValues(
+        ObjectManager $manager,
+        array $parameters,
+    ): array {
         $values = [];
         foreach ($parameters as $parameter) {
-            $count = 10;
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < self::PER_LEVEL_VALUE_COUNT; $i++) {
                 $value = new OptionValue();
                 $value->setParameter($parameter);
-                $value->setValue(strtoupper(substr($parameter->getName(), 0, 2)) . '-' . $faker->numberBetween(1, 99));
-                $value->setUuid($faker->uuid());
+                $value->setValue(sprintf('%s-%d', substr($parameter->getName(), 0, 3), $i));
                 $manager->persist($value);
                 $values[$parameter->getLevel()][] = $value;
             }
         }
 
+        return $values;
+    }
+
+    /**
+     * @param ObjectManager $manager
+     * @param array<OptionParameter> $parameters
+     * @param array<array<OptionValue>> $values
+     *
+     * @return void
+     */
+    private function buildOptionValueRelations(
+        ObjectManager $manager,
+        array $parameters,
+        array $values,
+    ): void {
         foreach ($parameters as $index => $parameter) {
             if ($index === count($parameters) - 1) {
                 break;
@@ -54,8 +101,8 @@ class OptionParameterFixtures extends Fixture
             $nextLevelValues = $values[$parameter->getLevel() + 1];
 
             foreach ($currentLevelValues as $parentValue) {
-                $childCount = $faker->numberBetween(2, 5);
-                $childSubset = $faker->randomElements($nextLevelValues, $childCount);
+                $childCount = $this->faker->numberBetween(1, count($nextLevelValues));
+                $childSubset = $this->faker->randomElements($nextLevelValues, $childCount);
 
                 foreach ($childSubset as $childValue) {
                     $relation = new OptionValueRelation();
@@ -65,7 +112,5 @@ class OptionParameterFixtures extends Fixture
                 }
             }
         }
-
-        $manager->flush();
     }
 }

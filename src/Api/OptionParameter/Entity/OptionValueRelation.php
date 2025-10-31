@@ -18,9 +18,15 @@ class OptionValueRelation
     #[ORM\JoinColumn(name: 'id_option_value_parent', referencedColumnName: 'id_option_value', nullable: false)]
     private ?OptionValue $parent = null;
 
+    #[ORM\Column(name: 'id_option_value_parent', type: 'integer', insertable: false, updatable: false)]
+    private ?int $parentId = null;
+
     #[ORM\ManyToOne(targetEntity: OptionValue::class)]
     #[ORM\JoinColumn(name: 'id_option_value_child', referencedColumnName: 'id_option_value', nullable: false)]
     private ?OptionValue $child = null;
+
+    #[ORM\Column(name: 'id_option_value_child', type: 'integer', insertable: false, updatable: false)]
+    private ?int $childId = null;
 
     public function getIdOptionValueRelation(): ?int
     {
@@ -47,5 +53,15 @@ class OptionValueRelation
     {
         $this->child = $child;
         return $this;
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->parentId;
+    }
+
+    public function getChildId(): ?int
+    {
+        return $this->childId;
     }
 }

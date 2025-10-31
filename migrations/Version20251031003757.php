@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251030134739 extends AbstractMigration
+final class Version20251031003757 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20251030134739 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE option_parameter (id_option_parameter SERIAL NOT NULL, name VARCHAR(255) NOT NULL, level INT NOT NULL, PRIMARY KEY(id_option_parameter))');
-        $this->addSql('CREATE TABLE option_value (id_option_value SERIAL NOT NULL, id_option_parameter INT NOT NULL, value VARCHAR(255) NOT NULL, uuid UUID DEFAULT NULL, PRIMARY KEY(id_option_value))');
+        $this->addSql('CREATE TABLE option_value (id_option_value SERIAL NOT NULL, id_option_parameter INT NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id_option_value))');
         $this->addSql('CREATE INDEX IDX_249CE55C1886D441 ON option_value (id_option_parameter)');
         $this->addSql('CREATE TABLE option_value_relation (id_option_value_relation SERIAL NOT NULL, id_option_value_parent INT NOT NULL, id_option_value_child INT NOT NULL, PRIMARY KEY(id_option_value_relation))');
         $this->addSql('CREATE INDEX IDX_A74AC0261B0DE08D ON option_value_relation (id_option_value_parent)');

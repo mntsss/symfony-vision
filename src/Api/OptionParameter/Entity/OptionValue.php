@@ -22,9 +22,6 @@ class OptionValue
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
-    #[ORM\Column(type: Types::GUID, nullable: true)]
-    private ?string $uuid = null;
-
     public function getIdOptionValue(): ?int
     {
         return $this->idOptionValue;
@@ -49,17 +46,6 @@ class OptionValue
     public function setValue(string $value): static
     {
         $this->value = $value;
-        return $this;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(?string $uuid): static
-    {
-        $this->uuid = $uuid;
         return $this;
     }
 }

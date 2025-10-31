@@ -1,3 +1,18 @@
+# Starting the project for Vision
+
+1. Docker Desktop or older Docker is a prerequisite.
+2. Run `docker compose build --pull --no-cache` to build fresh images
+3. Run `docker compose up --wait` to set up and start a fresh Symfony project.
+4. Jump into container `docker exec -ti symfony-docker-php-1 bash`
+5. Inside container execute following:
+    ```ssh
+    bin/console doctrine:mig:m
+    bin/console doc:fixture:load --silent
+    ```
+6. Open https://localhost/api/option/parameter to make sure the data is loaded.
+7. In case you need different set of data - modify `OptionParameterFixtures` constants and rerun fixture command.
+8. Endpoint accepts query parameter `param` with keys as parameter name, and value - selected option value. I.e.: `/api/option/parameter?param[power]=pow-2&param[diameter]=dia-3`.
+
 # Symfony Docker
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
